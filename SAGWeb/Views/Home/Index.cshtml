@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="main-container">
+    <div class="card-sagrisa text-center">
+        <div class="card-header">
+            <h2 class="mb-0">Módulo de Cotizaciones</h2>
+        </div>
+        <div class="card-body">
+            <p class="lead mb-4">Gestione cotizaciones, clientes y consultas de forma ágil y eficiente.</p>
+            <div class="d-grid gap-3">
+                <a class="btn btn-primary-sagrisa btn-lg" asp-controller="Cotizaciones" asp-action="Paso1">
+                    📝 Nueva Cotización
+                </a>
+                <a class="btn btn-success-sagrisa btn-lg" asp-controller="Cotizaciones" asp-action="Index">
+                    🔍 Buscar Cotizaciones
+                </a>
+                <a class="btn btn-secondary-sagrisa btn-lg" asp-controller="Clientes" asp-action="Crear">
+                    ➕ Registrar Cliente
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

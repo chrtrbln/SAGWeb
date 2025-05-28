@@ -1,0 +1,167 @@
+﻿@{
+    ViewBag.Title = "Cotización Enviada - SAGRISA";
+}
+
+<div class="main-container">
+    <!-- Header del Wizard -->
+    <div class="wizard-container">
+        <div class="wizard-header">
+            <h1 class="wizard-title">¡Cotización Completada!</h1>
+            <p class="wizard-subtitle">Tu solicitud ha sido procesada exitosamente</p>
+        </div>
+
+        <ul class="wizard-steps">
+            <li class="wizard-step completed">Paso 1<br><small>Información</small></li>
+            <li class="wizard-step completed">Paso 2<br><small>Productos</small></li>
+            <li class="wizard-step completed">Paso 3<br><small>Resumen</small></li>
+            <li class="wizard-step completed">Paso 4<br><small>Confirmación</small></li>
+        </ul>
+    </div>
+
+    <!-- Mensaje de Éxito -->
+    <div class="text-center fade-in">
+        <div class="card-sagrisa">
+            <div class="card-body" style="padding: 3rem 2rem;">
+                <!-- Ícono de éxito animado -->
+                <div class="mb-4">
+                    <div style="width: 80px; height: 80px; margin: 0 auto; background: linear-gradient(135deg, var(--accent-color) 0%, #20c997 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; animation: checkmark-bounce 0.6s ease-in-out;">
+                        <i class="fas fa-check" style="font-size: 2.5rem; color: white;"></i>
+                    </div>
+                </div>
+
+                <!-- Mensaje principal -->
+                <h2 class="mb-3" style="color: var(--accent-color); font-weight: 600;">
+                    ¡Cotización enviada con éxito!
+                </h2>
+
+                <p class="mb-4" style="font-size: 1.1rem; color: var(--dark-color); line-height: 1.6;">
+                    Se ha enviado un correo electrónico con los detalles completos de la cotización.<br>
+                    Nuestro equipo se pondrá en contacto contigo pronto.
+                </p>
+
+                <!-- Información adicional -->
+                <div class="alert-success-sagrisa mb-4">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <i class="fas fa-envelope" style="margin-right: 0.5rem;"></i>
+                        <span><strong>Revisa tu bandeja de entrada</strong> - El correo puede tardar unos minutos en llegar</span>
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="d-flex justify-content-center flex-wrap gap-3">
+                    <a href="@Url.Action("Index", "Home")" class="btn-sagrisa btn-primary-sagrisa">
+                        <i class="fas fa-home"></i> Volver al Inicio
+                    </a>
+
+                    <a href="@Url.Action("Index", "Cotizacion")" class="btn-sagrisa btn-secondary-sagrisa">
+                        <i class="fas fa-plus"></i> Nueva Cotización
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Información de Contacto -->
+    <div class="card-sagrisa fade-in" style="animation-delay: 0.3s;">
+        <div class="card-header">
+            <i class="fas fa-info-circle"></i> ¿Necesitas ayuda?
+        </div>
+        <div class="card-body">
+            <div class="row text-center">
+                <div class="col-md-4 mb-3">
+                    <div class="p-3">
+                        <i class="fas fa-phone-alt fa-2x mb-2" style="color: var(--primary-color);"></i>
+                        <h6><strong>Llámanos</strong></h6>
+                        <p class="mb-0 text-muted">+503 2XXX-XXXX</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="p-3">
+                        <i class="fas fa-envelope fa-2x mb-2" style="color: var(--primary-color);"></i>
+                        <h6><strong>Escríbenos</strong></h6>
+                        <p class="mb-0 text-muted">info@sagrisa.com</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="p-3">
+                        <i class="fas fa-clock fa-2x mb-2" style="color: var(--primary-color);"></i>
+                        <h6><strong>Horario</strong></h6>
+                        <p class="mb-0 text-muted">Lun-Vie 8:00-17:00</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Próximos pasos -->
+    <div class="card-sagrisa fade-in" style="animation-delay: 0.6s;">
+        <div class="card-header">
+            <i class="fas fa-clipboard-list"></i> ¿Qué sigue ahora?
+        </div>
+        <div class="card-body">
+            <div class="list-sagrisa">
+                <div class="list-item-sagrisa">
+                    <div class="d-flex align-items-start">
+                        <div style="width: 30px; height: 30px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                            <strong>1</strong>
+                        </div>
+                        <div>
+                            <strong>Revisión de cotización</strong>
+                            <p class="mb-0 text-muted">Nuestro equipo revisará tu solicitud en un plazo de 24 horas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-item-sagrisa">
+                    <div class="d-flex align-items-start">
+                        <div style="width: 30px; height: 30px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                            <strong>2</strong>
+                        </div>
+                        <div>
+                            <strong>Contacto personalizado</strong>
+                            <p class="mb-0 text-muted">Un especialista se comunicará contigo para afinar detalles.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-item-sagrisa">
+                    <div class="d-flex align-items-start">
+                        <div style="width: 30px; height: 30px; background: var(--primary-color); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 1rem; flex-shrink: 0;">
+                            <strong>3</strong>
+                        </div>
+                        <div>
+                            <strong>Propuesta final</strong>
+                            <p class="mb-0 text-muted">Recibirás la cotización final con todos los detalles y condiciones.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar framework SAGRISA
+        if (typeof SagrisaApp !== 'undefined') {
+            SagrisaApp.initWizardNavigation();
+
+            // Mostrar toast de confirmación
+            setTimeout(() => {
+                SagrisaApp.showToast('¡Tu cotización ha sido enviada exitosamente!', 'success', 4000);
+            }, 1000);
+        }
+
+        // Animación secuencial de las cards
+        const cards = document.querySelectorAll('.fade-in');
+        cards.forEach((card, index) => {
+            setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+            }, index * 200);
+        });
+    });
+</script>

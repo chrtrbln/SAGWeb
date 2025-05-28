@@ -1,0 +1,444 @@
+﻿@model SAGWeb.ViewModels.ProductoWizardViewModel;
+@{
+    ViewData["Title"] = "Paso 2: Productos";
+}
+
+<div class="main-container">
+    <div class="wizard-container">
+        <!-- Header del Wizard -->
+        <div class="wizard-header">
+            <h1 class="wizard-title">Nueva Cotización</h1>
+            <p class="wizard-subtitle">Complete los siguientes pasos para generar su cotización</p>
+        </div>
+
+        <!-- Pasos del Wizard -->
+        <ul class="wizard-steps">
+            <li class="wizard-step completed">Paso 1<br><small>Información</small></li>
+            <li class="wizard-step active">Paso 2<br><small>Productos</small></li>
+            <li class="wizard-step">Paso 3<br><small>Resumen</small></li>
+            <li class="wizard-step">Paso 4<br><small>Confirmación</small></li>
+        </ul>
+
+        <!-- Contenido del Wizard -->
+        <div class="wizard-content">
+            <!-- Formulario de productos -->
+            <div class="card-sagrisa mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0">🛍️ Agregar Productos</h5>
+                </div>
+                <div class="card-body">
+                    <form id="formProducto" class="sagrisa-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="NombreProducto">
+                                        <span>📦</span> Nombre del Producto *
+                                    </label>
+                                    <input asp-for="NombreProducto"
+                                           class="form-control-sagrisa"
+                                           id="NombreProducto"
+                                           autocomplete="off"
+                                           placeholder="Busque y seleccione un producto..."
+                                           required />
+                                    <div class="invalid-feedback">Por favor seleccione un producto</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Bodega">
+                                        <span>🏪</span> Bodega
+                                    </label>
+                                    <input asp-for="Bodega"
+                                           class="form-control-sagrisa"
+                                           id="Bodega"
+                                           readonly
+                                           style="background-color: #f8f9fa;" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Inventario">
+                                        <span>📊</span> Inventario Disponible
+                                    </label>
+                                    <input asp-for="Inventario"
+                                           class="form-control-sagrisa"
+                                           id="Inventario"
+                                           readonly
+                                           style="background-color: #f8f9fa;" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Cantidad">
+                                        <span>🔢</span> Cantidad *
+                                    </label>
+                                    <input asp-for="Cantidad"
+                                           class="form-control-sagrisa"
+                                           id="Cantidad"
+                                           type="number"
+                                           min="1"
+                                           placeholder="0"
+                                           required />
+                                    <div class="invalid-feedback">Ingrese una cantidad válida</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Precio">
+                                        <span>💰</span> Precio por Unidad *
+                                    </label>
+                                    <input asp-for="Precio"
+                                           class="form-control-sagrisa"
+                                           id="Precio"
+                                           type="number"
+                                           step="0.01"
+                                           min="0.01"
+                                           placeholder="0.00"
+                                           required />
+                                    <div class="invalid-feedback">Ingrese un precio válido</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="PrecioBase">
+                                        <span>💵</span> Precio Base
+                                    </label>
+                                    <input asp-for="PrecioBase"
+                                           class="form-control-sagrisa"
+                                           id="PrecioBase"
+                                           readonly
+                                           style="background-color: #f8f9fa;" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-group-sagrisa w-100">
+                                    <button type="button" id="btnAgregar" class="btn btn-primary w-100">
+                                        ➕ Agregar Producto
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Tabla de productos agregados -->
+            <div class="card-sagrisa">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">📋 Productos Agregados</h5>
+                    <span id="contadorProductos" class="badge badge-primary">0 productos</span>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table-sagrisa" id="tablaProductos">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Bodega</th>
+                                    <th>Cantidad</th>
+                                    <th>Precio U.</th>
+                                    <th>Total</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr id="filaVacia">
+                                    <td colspan="6" class="text-center text-muted p-4">
+                                        <div style="opacity: 0.6;">
+                                            📦<br>
+                                            <small>No hay productos agregados aún</small>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3" id="resumenTotal" style="display: none !important;">
+                        <div class="alert-success-sagrisa p-3" style="min-width: 200px;">
+                            <strong>Total General: <span id="totalGeneral">$0.00</span></strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navegación -->
+            <div class="d-flex justify-content-between mt-4">
+                <a href="@Url.Action("Paso1")" class="btn-secondary-sagrisa btn-sagrisa">
+                    ← Anterior
+                </a>
+
+                <form asp-action="Paso2" method="post" class="d-inline">
+                    <input type="hidden" name="productosJson" id="productosJson" />
+                    <button type="submit" id="btnSiguiente" class="btn btn-primary" disabled>
+                        Siguiente →
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="toast-container" class="toast-container"></div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script>
+        let productos = [];
+
+        $(function () {
+            $("#NombreProducto").autocomplete({
+                source: '/Cotizaciones/AutocompletarProducto',
+                minLength: 2,
+                select: function (event, ui) {
+                    SagrisaApp.showToast('Cargando información del producto...', 'info', 2000);
+
+                    $.getJSON('/Cotizaciones/ObtenerDatosProducto', { nombre: ui.item.value }, function (data) {
+                        if (data) {
+                            $('#Bodega').val(data.bodega);
+                            $('#Inventario').val(data.existencia);
+                            $('#PrecioBase').val(data.precioBase);
+                            $('#Precio').val(data.precioBase);
+
+                            SagrisaApp.showToast('Producto cargado correctamente', 'success');
+                            $('#Cantidad').focus();
+                        }
+                    }).fail(function() {
+                        SagrisaApp.showToast('Error al cargar los datos del producto', 'error');
+                    });
+                }
+            });
+
+            $('#btnAgregar').on('click', function () {
+                if (agregarProducto()) {
+                    limpiarCampos();
+                    $('#NombreProducto').focus();
+                }
+            });
+
+            $('#formProducto').on('keypress', function(e) {
+                if (e.which === 13) {
+                    e.preventDefault();
+                    $('#btnAgregar').click();
+                }
+            });
+
+            $('#Cantidad').on('input', function() {
+                const cantidad = parseInt($(this).val()) || 0;
+                const inventario = parseInt($('#Inventario').val()) || 0;
+
+                if (cantidad > inventario && inventario > 0) {
+                    $(this).addClass('is-invalid');
+                    $(this).siblings('.invalid-feedback').text(`La cantidad no puede ser mayor al inventario (${inventario})`).show();
+                } else {
+                    $(this).removeClass('is-invalid');
+                    $(this).siblings('.invalid-feedback').hide();
+                }
+
+                actualizarPrecioTotal();
+            });
+            $('#Precio').on('input', actualizarPrecioTotal);
+        });
+
+        function agregarProducto() {
+            const nombreProducto = $('#NombreProducto').val().trim();
+            const bodega = $('#Bodega').val().trim();
+            const inventario = parseInt($('#Inventario').val()) || 0;
+            const cantidad = parseInt($('#Cantidad').val()) || 0;
+            const precio = parseFloat($('#Precio').val()) || 0;
+            const precioBase = parseFloat($('#PrecioBase').val()) || 0;
+
+            if (!nombreProducto) {
+                SagrisaApp.showToast('Por favor seleccione un producto', 'warning');
+                $('#NombreProducto').focus();
+                return false;
+            }
+
+            if (cantidad <= 0) {
+                SagrisaApp.showToast('La cantidad debe ser mayor a cero', 'warning');
+                $('#Cantidad').focus();
+                return false;
+            }
+
+            if (cantidad > inventario) {
+                SagrisaApp.showToast(`La cantidad no puede ser mayor al inventario disponible (${inventario})`, 'error');
+                $('#Cantidad').focus();
+                return false;
+            }
+
+            if (precio <= 0) {
+                SagrisaApp.showToast('El precio debe ser mayor a cero', 'warning');
+                $('#Precio').focus();
+                return false;
+            }
+
+            const productoExistente = productos.find(p => p.NombreProducto === nombreProducto);
+            if (productoExistente) {
+                SagrisaApp.showToast('Este producto ya ha sido agregado', 'warning');
+                return false;
+            }
+
+            const total = cantidad * precio;
+            productos.push({
+                NombreProducto: nombreProducto,
+                Bodega: bodega,
+                Cantidad: cantidad,
+                Precio: precio,
+                total: total,
+                PrecioBase: precioBase
+            });
+
+            actualizarTabla();
+            SagrisaApp.showToast('Producto agregado correctamente', 'success');
+            return true;
+        }
+
+        function actualizarTabla() {
+            const tbody = $("#tablaProductos tbody");
+            tbody.empty();
+
+            if (productos.length === 0) {
+                tbody.append(`
+                    <tr id="filaVacia">
+                        <td colspan="6" class="text-center text-muted p-4">
+                            <div style="opacity: 0.6;">
+                                📦<br>
+                                <small>No hay productos agregados aún</small>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+                $('#resumenTotal').hide();
+                $('#btnSiguiente').prop('disabled', true);
+            } else {
+                productos.forEach((p, index) => {
+                    tbody.append(`
+                        <tr class="fade-in">
+                            <td><strong>${p.NombreProducto}</strong></td>
+                            <td>${p.Bodega}</td>
+                            <td class="text-center">${p.Cantidad}</td>
+                            <td class="text-right">$${p.Precio.toFixed(2)}</td>
+                            <td class="text-right"><strong>$${p.total.toFixed(2)}</strong></td>
+                            <td class="text-center">
+                                <button type="button"
+                                        class="btn btn-danger btn-sm"
+                                        onclick="eliminarProducto(${index})"
+                                        title="Eliminar producto">
+                                    🗑️
+                                </button>
+                            </td>
+                        </tr>
+                    `);
+                });
+
+                const totalGeneral = productos.reduce((sum, p) => sum + p.total, 0);
+                $('#totalGeneral').text(SagrisaApp.formatCurrency(totalGeneral));
+                $('#resumenTotal').show();
+                $('#btnSiguiente').prop('disabled', false);
+            }
+
+            $('#contadorProductos').text(`${productos.length} producto${productos.length !== 1 ? 's' : ''}`);
+
+            $('#productosJson').val(JSON.stringify(productos));
+        }
+
+        function eliminarProducto(index) {
+            const producto = productos[index];
+            if (confirm(`¿Está seguro de eliminar "${producto.NombreProducto}"?`)) {
+                productos.splice(index, 1);
+                actualizarTabla();
+                SagrisaApp.showToast('Producto eliminado', 'info');
+            }
+        }
+
+        function limpiarCampos() {
+            $('#NombreProducto').val('');
+            $('#Bodega').val('');
+            $('#Inventario').val('');
+            $('#Cantidad').val('');
+            $('#Precio').val('');
+            $('#PrecioBase').val('');
+
+            $('.form-control-sagrisa').removeClass('is-valid is-invalid');
+        }
+
+        function actualizarPrecioTotal() {
+            const cantidad = parseInt($('#Cantidad').val()) || 0;
+            const precio = parseFloat($('#Precio').val()) || 0;
+
+            if (cantidad > 0 && precio > 0) {
+                const total = cantidad * precio;
+            }
+        }
+    </script>
+
+    <style>
+        .badge-primary {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        .table-responsive {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+            border: none;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--border-radius);
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+            .btn-danger:hover {
+                background-color: #c82333;
+                transform: scale(1.05);
+            }
+
+        .text-right {
+            text-align: right;
+        }
+
+        #resumenTotal {
+            animation: slideUp 0.3s ease-out;
+        }
+
+        /* Autocomplete personalizado */
+        .ui-autocomplete {
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+            font-family: inherit;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 50%;
+            background-color: white;
+        }
+
+            .ui-autocomplete .ui-menu-item {
+                padding: 0.5rem 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+                .ui-autocomplete .ui-menu-item:hover,
+                .ui-autocomplete .ui-menu-item.ui-state-focus {
+                    background-color: var(--primary-light);
+                    color: white;
+                }
+    </style>
+}

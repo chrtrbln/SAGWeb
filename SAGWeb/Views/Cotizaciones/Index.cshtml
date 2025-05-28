@@ -1,0 +1,53 @@
+﻿@model List<SAGWeb.ViewModels.CotizacionListadoViewModel>
+
+@{
+    ViewData["Title"] = "Mis Cotizaciones";
+}
+
+<div class="card-sagrisa">
+    <div class="card-header">
+        <h2 class="mb-4">Mis Cotizaciones</h2>
+    </div>
+    <div class="card-body">
+        <form asp-action="Index" method="get" class="mb-3 d-flex">
+            <input type="text" name="busqueda" value="@Context.Request.Query["busqueda"]" class="form-control me-2" placeholder="Buscar por nombre del cliente" />
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        @if (Model.Any())
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total ($)</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cot in Model)
+                    {
+                        <tr>
+                            <td>@cot.CodCotizacion</td>
+                            <td>@cot.NombreCliente</td>
+                            <td>@cot.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@cot.PrecioTotal.ToString("F2")</td>
+                            <td>
+                                <a asp-action="Detalle" asp-route-id="@cot.CodCotizacion" class="btn btn-sm btn-outline-info">Ver</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No hay cotizaciones registradas.
+            </div>
+        }
+    </div>
+</div>
+

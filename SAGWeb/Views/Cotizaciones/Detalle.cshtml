@@ -1,0 +1,49 @@
+﻿@model SAGWeb.ViewModels.CotizacionDetalleViewModel
+
+@{
+    ViewData["Title"] = "Detalle de Cotización";
+}
+<div class="card-sagrisa">
+    <div class="card-header">
+        <h2>Detalle de Cotización</h2>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <strong>Código:</strong> @Model.CodCotizacion <br />
+            <strong>Cliente:</strong> @Model.NombreCliente <br />
+            <strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy HH:mm") <br />
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unidad</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var d in Model.Productos)
+                {
+                    <tr>
+                        <td>@d.Nombre</td>
+                        <td>@d.Cantidad</td>
+                        <td>$@d.PrecioUnitario.ToString("F2")</td>
+                        <td>
+                            <a href="@Url.Action("Detalle", new { id = Model.CodCotizacion })" class="btn btn-sm btn-info">
+                                Ver Detalle
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <h4 class="text-end">Total: $@Model.Total.ToString("F2")</h4>
+
+        <a asp-action="Index" class="btn btn-secondary mt-3">Volver al listado</a>
+    </div>
+</div>
+
+

@@ -1,0 +1,175 @@
+﻿@model SAGWeb.ViewModels.CotizacionResumenViewModel
+
+<div class="main-container">
+    <!-- Header del Wizard -->
+    <div class="wizard-container">
+        <div class="wizard-header">
+            <h1 class="wizard-title">Resumen de Cotización</h1>
+            <p class="wizard-subtitle">Revisa los detalles antes de enviar</p>
+        </div>
+
+        <ul class="wizard-steps">
+            <li class="wizard-step completed">Paso 1<br><small>Información</small></li>
+            <li class="wizard-step completed">Paso 2<br><small>Productos</small></li>
+            <li class="wizard-step active">Paso 3<br><small>Resumen</small></li>
+            <li class="wizard-step">Paso 4<br><small>Confirmación</small></li>
+        </ul>
+    </div>
+
+    <!-- Información del Cliente -->
+    <div class="card-sagrisa fade-in">
+        <div class="card-header">
+            <i class="fas fa-user"></i> Información del Cliente
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group-sagrisa">
+                        <label class="form-label-sagrisa">Fecha de Cotización:</label>
+                        <p class="mb-0"><strong>@Model.FechaCotizacion</strong></p>
+                    </div>
+                    <div class="form-group-sagrisa">
+                        <label class="form-label-sagrisa">Cliente:</label>
+                        <p class="mb-0"><strong>@Model.NombreCliente</strong></p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group-sagrisa">
+                        <label class="form-label-sagrisa">Empresa:</label>
+                        <p class="mb-0"><strong>@Model.Empresa</strong></p>
+                    </div>
+                    <div class="form-group-sagrisa">
+                        <label class="form-label-sagrisa">Correo Electrónico:</label>
+                        <p class="mb-0"><strong>@Model.CorreoCliente</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detalle de Productos -->
+    <div class="card-sagrisa fade-in">
+        <div class="card-header">
+            <i class="fas fa-shopping-cart"></i> Detalle de Productos (@(Model.Productos?.Count ?? 0) productos)
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table-sagrisa">
+                    <thead>
+                        <tr>
+                            <th style="width: 40%;">Producto</th>
+                            <th style="width: 15%;" class="text-center">Cantidad</th>
+                            <th style="width: 20%;" class="text-right">Precio Unitario</th>
+                            <th style="width: 25%;" class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Productos != null && Model.Productos.Any())
+                        {
+                            @foreach (var item in Model.Productos)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@item.NombreProducto</strong>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge" style="background-color: var(--primary-color); color: white; padding: 0.5rem 0.75rem; border-radius: var(--border-radius);">
+                                            @item.Cantidad
+                                        </span>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong>@item.Precio.ToString("C", new System.Globalization.CultureInfo("es-SV"))</strong>
+                                    </td>
+                                    <td class="text-right">
+                                        <strong style="color: var(--primary-color);">@item.Subtotal.ToString("C", new System.Globalization.CultureInfo("es-SV"))</strong>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center" style="padding: 2rem;">
+                                    <div class="alert-warning-sagrisa">
+                                        No hay productos en esta cotización
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Resumen Financiero -->
+    <div class="card-sagrisa fade-in">
+        <div class="card-header">
+            <i class="fas fa-calculator"></i> Resumen Financiero
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                    <div class="list-sagrisa">
+                        <div class="list-item-sagrisa d-flex justify-content-between">
+                            <span><strong>Subtotal:</strong></span>
+                            <span><strong>@Model.Subtotal.ToString("C", new System.Globalization.CultureInfo("es-SV"))</strong></span>
+                        </div>
+                        <div class="list-item-sagrisa d-flex justify-content-between">
+                            <span><strong>IVA (13%):</strong></span>
+                            <span><strong>@Model.IVA.ToString("C", new System.Globalization.CultureInfo("es-SV"))</strong></span>
+                        </div>
+                        <div class="list-item-sagrisa d-flex justify-content-between" style="background-color: var(--primary-color); color: white; border-color: var(--primary-color);">
+                            <span><strong style="font-size: 1.1rem;">TOTAL:</strong></span>
+                            <span><strong style="font-size: 1.2rem;">@Model.Total.ToString("C", new System.Globalization.CultureInfo("es-SV"))</strong></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Acciones -->
+    <div class="card-sagrisa fade-in">
+        <div class="card-body text-center">
+            <form asp-action="Paso4" method="post" class="sagrisa-form">
+                <div class="d-flex justify-content-between align-items-center">
+                    <a href="javascript:history.back()" class="btn-sagrisa btn-secondary-sagrisa">
+                        <i class="fas fa-arrow-left"></i> Regresar
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Enviar Cotización
+                    </button>
+                </div>
+
+                <div class="mt-3">
+                    <small class="text-muted">
+                        Al enviar la cotización, se enviará un correo electrónico con todos los detalles a <strong>@Model.CorreoCliente</strong>
+                    </small>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inicializar wizard navigation
+        if (typeof SagrisaApp !== 'undefined') {
+            SagrisaApp.initWizardNavigation();
+
+            // Animación de entrada para las cards
+            const cards = document.querySelectorAll('.card-sagrisa');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('fade-in');
+                }, index * 100);
+            });
+        }
+    });
+</script>

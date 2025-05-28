@@ -1,0 +1,33 @@
+﻿@model SAGWeb.Models.Cliente;
+
+@{
+    ViewData["Title"] = "Registrar Cliente";
+}
+
+<div class="card-sagrisa">
+    <div class="card-header">
+        <h4 class="mb-4">Registrar Cliente</h4>
+    </div>
+    <div class="card-body">
+        <form asp-action="Crear">
+            <div class="mb-3">
+                <label asp-for="NomCliente" class="form-label">Nombre</label>
+                <input asp-for="NomCliente" class="form-control-sagrisa" required />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Ciudad" class="form-label"></label>
+                <input asp-for="Ciudad" class="form-control-sagrisa" required />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Correo" class="form-label"></label>
+                <input asp-for="Correo" class="form-control-sagrisa" required />
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+

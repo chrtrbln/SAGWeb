@@ -1,0 +1,202 @@
+﻿@model SAGWeb.ViewModels.ClienteWizardViewModel;
+@{
+    ViewData["Title"] = "Paso 1: Cliente";
+}
+
+<div class="main-container">
+    <div class="wizard-container">
+        <!-- Header del Wizard -->
+        <div class="wizard-header">
+            <h1 class="wizard-title">Nueva Cotización</h1>
+            <p class="wizard-subtitle">Complete los siguientes pasos para generar su cotización</p>
+        </div>
+
+        <ul class="wizard-steps">
+            <li class="wizard-step active">Paso 1<br><small>Información</small></li>
+            <li class="wizard-step">Paso 2<br><small>Productos</small></li>
+            <li class="wizard-step">Paso 3<br><small>Resumen</small></li>
+            <li class="wizard-step">Paso 4<br><small>Confirmación</small></li>
+        </ul>
+    </div>
+
+        <!-- Contenido del Wizard -->
+        <div class="wizard-content">
+            <div class="card-sagrisa">
+                <div class="card-header">
+                    <h5 class="mb-0">📋 Información del Cliente</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Paso1" method="post" class="sagrisa-form">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="NombreCliente">
+                                        <span>👤</span> Nombre del Cliente *
+                                    </label>
+                                    <input asp-for="Nombre"
+                                           class="form-control-sagrisa"
+                                           id="NombreCliente"
+                                           autocomplete="off"
+                                           placeholder="Escriba el nombre del cliente..."
+                                           required />
+                                    <div class="invalid-feedback">Por favor ingrese el nombre del cliente</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Empresa">
+                                        <span>🏢</span> Empresa
+                                    </label>
+                                    <input asp-for="Empresa"
+                                           class="form-control-sagrisa"
+                                           id="Empresa"
+                                           placeholder="Nombre de la empresa..." />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Departamento">
+                                        <span>🗺️</span> Departamento
+                                    </label>
+                                    <input asp-for="Departamento"
+                                           class="form-control-sagrisa"
+                                           id="Departamento"
+                                           placeholder="Departamento..." />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Municipio">
+                                        <span>📍</span> Municipio
+                                    </label>
+                                    <input asp-for="Municipio"
+                                           class="form-control-sagrisa"
+                                           id="Municipio"
+                                           placeholder="Municipio..." />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group-sagrisa">
+                            <label class="form-label-sagrisa" for="Direccion">
+                                <span>🏠</span> Dirección Completa
+                            </label>
+                            <input asp-for="Direccion"
+                                   class="form-control-sagrisa"
+                                   id="Direccion"
+                                   placeholder="Dirección completa del cliente..." />
+                            <div class="invalid-feedback"></div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Correo">
+                                        <span>📧</span> Correo Electrónico
+                                    </label>
+                                    <input asp-for="Correo"
+                                           class="form-control-sagrisa"
+                                           id="Correo"
+                                           type="email"
+                                           placeholder="correo@ejemplo.com" />
+                                    <div class="invalid-feedback">Por favor ingrese un correo válido</div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group-sagrisa">
+                                    <label class="form-label-sagrisa" for="Telefono">
+                                        <span>📞</span> Teléfono
+                                    </label>
+                                    <input asp-for="Telefono"
+                                           class="form-control-sagrisa"
+                                           id="Telefono"
+                                           placeholder="0000-0000" />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <button type="button" class="btn-secondary-sagrisa" disabled>
+                                ← Anterior
+                            </button>
+                            <button type="submit" class="btn btn-primary">
+                                Siguiente →
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container" class="toast-container"></div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <script>
+        $(function () {
+            $("#NombreCliente").autocomplete({
+                source: '/Cotizaciones/AutocompletarCliente',
+                select: function (event, ui) {
+                    $.getJSON('/Cotizaciones/ObtenerDatosCliente', { nombre: ui.item.value }, function (data) {
+                        if (data) {
+                            $('input[name="Empresa"]').val(data.empresa);
+                            $('input[name="Departamento"]').val(data.departamento);
+                            $('input[name="Municipio"]').val(data.municipio);
+                            $('input[name="Direccion"]').val(data.direccion);
+                            $('input[name="Correo"]').val(data.correo);
+                            $('input[name="Telefono"]').val(data.telefono);
+                        }
+                    });
+                }
+            });
+            $("#NombreCliente").autocomplete("widget").addClass("ui-autocomplete-sagrisa");
+        });
+    </script>
+
+    <style>
+        /* Estilos personalizados para el autocomplete */
+        .ui-autocomplete-sagrisa {
+            border: 2px solid var(--primary-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+            font-family: inherit;
+            background-color: white;
+            width: 50%;
+        }
+
+            .ui-autocomplete-sagrisa .ui-menu-item {
+                padding: 0.5rem 1rem;
+                border-bottom: 1px solid var(--border-color);
+            }
+
+                .ui-autocomplete-sagrisa .ui-menu-item:hover,
+                .ui-autocomplete-sagrisa .ui-menu-item.ui-state-focus {
+                    background-color: var(--primary-light);
+                    color: white;
+                }
+
+        /* Iconos en labels */
+        .form-label-sagrisa span {
+            margin-right: 0.5rem;
+            font-size: 1rem;
+        }
+
+        /* Animación de entrada */
+        .wizard-container {
+            animation: fadeIn 0.5s ease-in;
+        }
+    </style>
+}

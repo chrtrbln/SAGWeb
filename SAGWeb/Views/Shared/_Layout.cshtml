@@ -1,0 +1,117 @@
+﻿@{
+    var vendedor = Context.Session.GetString("NombreVendedor");
+}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="format-detection" content="telephone=no">
+    <title>@ViewData["Title"] - SAGRISA</title>
+
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="apple-touch-icon" href="~/icon-192.jpg">
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/sagrisa-mobile.css" asp-append-version="true" />
+    <link rel="manifest" href="~/manifest.json">
+    <meta name="theme-color" content="#00A0E8">
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-custom navbar-dark sticky-top">
+            <div class="container-fluid px-3">
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <strong>SAGRISA</strong>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="navbar-nav ms-auto">
+                        @if (!string.IsNullOrEmpty(vendedor))
+                        {
+                            <span class="navbar-text text-white me-3">
+                                👤 Bienvenido, <strong>@vendedor</strong>
+                            </span>
+                            <a class="btn btn-outline-light btn-sm" asp-controller="Login" asp-action="Logout">
+                                🚪 Cerrar sesión
+                            </a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-outline-light btn-sm" asp-controller="Login" asp-action="Index">
+                                🔐 Iniciar sesión
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main">
+        <div class="main-container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="footer text-muted">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <small>&copy; 2025 - SAGRISA - Sistema de Cotización</small>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <small>
+                        <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-muted">
+                            Privacidad
+                        </a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/sagrisa-mobile.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <div id="toast-container" class="toast-container"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentStep = '@ViewData["CurrentStep"]';
+            if (currentStep && window.SagrisaApp) {
+                document.body.dataset.currentStep = currentStep;
+                window.SagrisaApp.initWizardNavigation();
+            }
+
+            const isNewSession = '@TempData["IsNewSession"]';
+            if (isNewSession === 'true' && window.SagrisaApp) {
+                window.SagrisaApp.showToast('¡Bienvenido a SAGRISA! 👋', 'success');
+            }
+
+            if (window.SagrisaApp && window.SagrisaApp.isMobile()) {
+                document.body.classList.add('mobile-device');
+            }
+
+            if (window.SagrisaApp) {
+                window.SagrisaApp.initTooltips();
+            }
+        });
+        window.showServerMessage = function(message, type) {
+            if (window.SagrisaApp) {
+                window.SagrisaApp.showToast(message, type);
+            }
+        };
+    </script>
+</body>
+</html>

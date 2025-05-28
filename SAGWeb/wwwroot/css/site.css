@@ -1,0 +1,122 @@
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.navbar-custom {
+    background-color: var(--primary-color) !important;
+    box-shadow: var(--shadow);
+    border: none;
+}
+
+
+.btn-primary-custom {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    min-height: 44px;
+    padding: 10px 20px;
+}
+
+    .btn-primary-custom:hover,
+    .btn-primary-custom:focus {
+        background-color: #234a87;
+        border-color: #234a87;
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-hover);
+    }
+
+/* Navbar responsive mejorada */
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.4rem;
+}
+
+.navbar-text {
+    font-size: 0.9rem;
+}
+
+.btn-outline-light {
+    border-radius: var(--border-radius);
+    font-size: 0.85rem;
+    padding: 8px 16px;
+    transition: var(--transition);
+}
+
+    .btn-outline-light:hover {
+        transform: translateY(-1px);
+    }
+
+/* Container principal responsive */
+.container-main {
+    padding-top: 0; /* Removemos porque usamos sticky header */
+}
+
+.container {
+    padding-left: 0;
+    padding-right: 0;
+    max-width: 100%;
+}
+
+/* Footer mobile-friendly */
+.footer {
+    background: var(--secondary-color);
+    border-top: 1px solid var(--border-color);
+    padding: 15px 0;
+    margin-top: auto; /* This pushes footer to bottom */
+}
+
+    .footer .container {
+        padding: 0 15px;
+        font-size: 0.85rem;
+    }
+
+@media (max-width: 767px) {
+    .navbar-nav {
+        text-align: center;
+        padding-top: 10px;
+    }
+
+    .navbar-text {
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    .btn-outline-light {
+        width: 100%;
+        margin-top: 5px;
+    }
+
+    .navbar-toggler {
+        border: none;
+        padding: 4px 8px;
+    }
+
+        .navbar-toggler:focus {
+            box-shadow: none;
+        }
+}
+
+main {
+    flex: 1;
+    /* Remove the current min-height rule */
+    /* min-height: calc(100vh - 140px); */
+}
+
+/* Override de Bootstrap container para nuestro sistema */
+.sagrisa-container {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+    margin: 0 auto;
+}
+
+@media (min-width: 768px) {
+    .sagrisa-container {
+        max-width: 600px;
+        padding: 30px;
+    }
+}
