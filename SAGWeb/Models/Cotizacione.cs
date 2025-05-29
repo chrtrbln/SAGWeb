@@ -14,6 +14,7 @@ public partial class Cotizacione
     public DateTime? FechaHora { get; set; }
 
     public decimal? PrecioTotal { get; set; }
+    public string? Estado {  get; set; }
 
     public virtual Cliente CodClienteNavigation { get; set; } = null!;
 

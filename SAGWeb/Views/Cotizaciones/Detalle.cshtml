@@ -3,15 +3,83 @@
 @{
     ViewData["Title"] = "Detalle de Cotización";
 }
-<div class="card-sagrisa">
+<<div class="card-sagrisa">
     <div class="card-header">
         <h2>Detalle de Cotización</h2>
     </div>
     <div class="card-body">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+
         <div class="mb-3">
             <strong>Código:</strong> @Model.CodCotizacion <br />
             <strong>Cliente:</strong> @Model.NombreCliente <br />
             <strong>Fecha:</strong> @Model.Fecha.ToString("dd/MM/yyyy HH:mm") <br />
+            <strong>Estado:</strong>
+            <span class="badge @(Model.Estado == "Aceptada" ? "bg-success" : Model.Estado == "Rechazada" ? "bg-danger" : "bg-warning")">
+                @Model.Estado
+            </span>
+        </div>
+
+        <div class="mb-4">
+            <div class="card border-light">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Gestión de Estado</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <p class="mb-2">Estado actual: <strong>@Model.Estado</strong></p>
+                            <small class="text-muted">Cambie el estado de la cotización según corresponda.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex gap-2 justify-content-end">
+                                @if (Model.Estado != "Aceptada")
+                                {
+                                    <button type="button"
+                                            class="btn btn-success btn-sm"
+                                            onclick="cambiarEstado(@Model.CodCotizacion, 'Aceptada')"
+                                    @(Model.Estado == "Aceptada" ? "disabled" : "")>
+                                        <i class="fas fa-check"></i> Aceptar
+                                    </button>
+                                }
+
+                                @if (Model.Estado != "Rechazada")
+                                {
+                                    <button type="button"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="cambiarEstado(@Model.CodCotizacion, 'Rechazada')"
+                                    @(Model.Estado == "Rechazada" ? "disabled" : "")>
+                                        <i class="fas fa-times"></i> Rechazar
+                                    </button>
+                                }
+
+                                @if (Model.Estado != "Pendiente")
+                                {
+                                    <button type="button"
+                                            class="btn btn-warning btn-sm"
+                                            onclick="cambiarEstado(@Model.CodCotizacion, 'Pendiente')">
+                                        <i class="fas fa-clock"></i> Pendiente
+                                    </button>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <table class="table table-bordered">
@@ -30,11 +98,7 @@
                         <td>@d.Nombre</td>
                         <td>@d.Cantidad</td>
                         <td>$@d.PrecioUnitario.ToString("F2")</td>
-                        <td>
-                            <a href="@Url.Action("Detalle", new { id = Model.CodCotizacion })" class="btn btn-sm btn-info">
-                                Ver Detalle
-                            </a>
-                        </td>
+                        <td>$@((d.Cantidad * d.PrecioUnitario).ToString("F2"))</td>
                     </tr>
                 }
             </tbody>
@@ -45,5 +109,109 @@
         <a asp-action="Index" class="btn btn-secondary mt-3">Volver al listado</a>
     </div>
 </div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirmar Cambio de Estado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage"></p>
+                <p class="text-muted small">Esta acción enviará una notificación por correo al cliente.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmButton">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="estadoForm" asp-action="CambiarEstado" method="post" style="display: none;">
+    <input type="hidden" name="id" value="@Model.CodCotizacion" />
+    <input type="hidden" name="nuevoEstado" id="nuevoEstadoInput" />
+</form>
+
+@section Scripts {
+    <script>
+        let estadoSeleccionado = '';
+        let cotizacionId = 0;
+
+        function cambiarEstado(id, nuevoEstado) {
+            cotizacionId = id;
+            estadoSeleccionado = nuevoEstado;
+
+            let mensaje = '';
+            let colorClass = '';
+
+            switch(nuevoEstado) {
+                case 'Aceptada':
+                    mensaje = '¿Está seguro de que desea <strong>ACEPTAR</strong> esta cotización?';
+                    colorClass = 'text-success';
+                    break;
+                case 'Rechazada':
+                    mensaje = '¿Está seguro de que desea <strong>RECHAZAR</strong> esta cotización?';
+                    colorClass = 'text-danger';
+                    break;
+                case 'Pendiente':
+                    mensaje = '¿Está seguro de que desea marcar como <strong>PENDIENTE</strong> esta cotización?';
+                    colorClass = 'text-warning';
+                    break;
+            }
+
+            document.getElementById('confirmMessage').innerHTML = mensaje;
+            document.getElementById('confirmMessage').className = colorClass;
+
+            var modal = new bootstrap.Modal(document.getElementById('confirmModal'));
+            modal.show();
+        }
+
+        document.getElementById('confirmButton').addEventListener('click', function() {
+            document.getElementById('nuevoEstadoInput').value = estadoSeleccionado;
+            document.getElementById('estadoForm').submit();
+        });
+
+        setTimeout(function() {
+            var alerts = document.querySelectorAll('.alert');
+            alerts.forEach(function(alert) {
+                var bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+}
+    <style>
+        .badge {
+            font-size: 0.85em;
+            padding: 0.4em 0.6em;
+        }
+
+        .card-header h5 {
+            color: #495057;
+        }
+
+        .btn-sm {
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+        }
+
+        .gap-2 {
+            gap: 0.5rem !important;
+        }
+
+        .text-success {
+            color: #198754 !important;
+        }
+
+        .text-danger {
+            color: #dc3545 !important;
+        }
+
+        .text-warning {
+            color: #ffc107 !important;
+        }
+    </style>
 
 

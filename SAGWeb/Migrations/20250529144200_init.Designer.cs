@@ -12,8 +12,8 @@ using SAGWeb.Data;
 namespace SAGWeb.Migrations
 {
     [DbContext(typeof(SagrisaDbContext))]
-    [Migration("20250527180627_Init")]
-    partial class Init
+    [Migration("20250529144200_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -129,6 +129,9 @@ namespace SAGWeb.Migrations
 
                     b.Property<int>("CodVendedor")
                         .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("FechaHora")
                         .ValueGeneratedOnAdd()

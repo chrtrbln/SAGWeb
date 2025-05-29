@@ -22,6 +22,7 @@
                         <th>Código</th>
                         <th>Cliente</th>
                         <th>Fecha</th>
+                        <th>Estado</th>
                         <th>Total ($)</th>
                         <th>Acciones</th>
                     </tr>
@@ -33,6 +34,11 @@
                             <td>@cot.CodCotizacion</td>
                             <td>@cot.NombreCliente</td>
                             <td>@cot.Fecha.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>
+                                <span class="badge @(cot.Estado == "Aceptada" ? "bg-success" : cot.Estado == "Rechazada" ? "bg-danger" : "bg-warning")">
+                                    @cot.Estado
+                                </span>
+                            </td>
                             <td>@cot.PrecioTotal.ToString("F2")</td>
                             <td>
                                 <a asp-action="Detalle" asp-route-id="@cot.CodCotizacion" class="btn btn-sm btn-outline-info">Ver</a>
@@ -50,4 +56,11 @@
         }
     </div>
 </div>
+
+    <style>
+        .badge {
+            font-size: 0.85em;
+            padding: 0.4em 0.6em;
+        }
+    </style>
 

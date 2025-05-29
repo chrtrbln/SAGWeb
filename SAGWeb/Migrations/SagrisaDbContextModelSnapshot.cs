@@ -127,6 +127,9 @@ namespace SAGWeb.Migrations
                     b.Property<int>("CodVendedor")
                         .HasColumnType("int");
 
+                    b.Property<string>("Estado")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("FechaHora")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime")

@@ -6,5 +6,6 @@
         public string NombreCliente { get; set; }
         public DateTime Fecha { get; set; }
         public decimal PrecioTotal { get; set; }
+        public string Estado { get; set; } = "Pendiente";
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SAGWeb.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -85,7 +85,8 @@ namespace SAGWeb.Migrations
                     CodCliente = table.Column<int>(type: "int", nullable: false),
                     CodVendedor = table.Column<int>(type: "int", nullable: false),
                     FechaHora = table.Column<DateTime>(type: "datetime", nullable: true, defaultValueSql: "(getdate())"),
-                    PrecioTotal = table.Column<decimal>(type: "decimal(12,2)", nullable: true)
+                    PrecioTotal = table.Column<decimal>(type: "decimal(12,2)", nullable: true),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
